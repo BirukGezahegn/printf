@@ -1,76 +1,74 @@
 #include "main.h"
-/**
- * _abs - calculates the absolute value.
- * @number: input.
- * Return: value.
- */
-int _abs(int number)
-{
-	if (number < 0)
-		return (-1 * number);
-	else
-		return (number);
-}
 
 /**
- * contadordigit - counts the digits.
- * @number: input integer
- * Return: digit count
+ * treat_flags - treat flags + and ' '
+ * @flags: flags string
+ * @buffer: to store result
+ * @size: size of buffer
+ *
  */
-int contadordigit(int number)
+void treat_flags(char *flags, char *buffer, int *size)
 {
-	int count = 0;
-	int number2 = number;
+	char sign = buffer[(*size) - 1];
+	int i;
 
-	if (number <= 0)
-		count += 1;
-
-	while (_abs(number2) != 0)
+	if (flags && sign != '-')
 	{
-		number2 = number2 / 10;
-		count++;
+		for (i = 0; flags[i]; i++)
+		{
+			if (flags[i] == ' ')
+				buffer[*size] = ' ';
+		}
+		for (i = 0; flags[i]; i++)
+		{
+			if (flags[i] == '+')
+				buffer[*size] = '+';
+		}
+		if (buffer[*size] == '+' || buffer[*size] == ' ')
+			(*size)++;
 	}
-	return (count);
 }
-/**
- * integer - a function that prints an integer.
- * @number: input integer
- * Return: digit count
- */
-int integer(int number)
-{
-	unsigned int unint;
-	int count;
 
-	count = contadordigit(number);
-if (number < 0)
+/**
+ * print_int - print integer
+ * @ap:va_list pointer for integer handle %i
+ * @modif:struct modifier containig modifier fields
+ * Return:int length
+ */
+char *print_int(modifier_t *modif, va_list ap)
 {
-_putchar('-');
-unint = -number;
-}
+	unsigned int x;
+	int i = 0, j = 0, n;
+	char buffer[10], *res_str;
+
+	if (!ap && !modif)
+		return (NULL);
+	n = va_arg(ap, int);
+	if (n == 0)
+	{
+		j = 1;
+		res_str = malloc(sizeof(char) * 2);
+		res_str[0] = '0';
+	}
 	else
-		unint = number;
-
-	if (unint >= 10)
-		integer(unint / 10);
-	_putchar(unint % 10 + '0');
-
-	return (count);
-}
-
-/**
- * printint - prints a number
- * @format: format to print number
- * @pa: va_list with number to print
- * Return: number of characters printed
- */
-int printint(char *format, va_list pa)
-{
-	int number = va_arg(pa, int);
-	int numero;
-	(void)format;
-
-	numero = integer(number);
-
-	return (numero);
+	{
+		if (n < 0)
+			x = -n;
+		else
+			x = n;
+		while (x)
+		{
+			buffer[i++] = (x % 10) + '0';
+			x = x / 10;
+		}
+		if (n < 0)
+			buffer[i++] = '-';
+		treat_flags(modif->flags, buffer, &i);
+		res_str = malloc(sizeof(char) * i);
+		i--;
+		while (i >= 0)
+			res_str[j++] = buffer[i--];
+	}
+	res_str[j] = '\0';
+	return (res_str);
 }
