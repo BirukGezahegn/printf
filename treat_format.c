@@ -5,8 +5,8 @@
  * get_print_func - gets the apropriate printing function
  * for a given format-specifier
  * @c: format-specifier
- *
- * Return: pointer to a function or NULL if not found
+ *Return: pointer to a function or NULL if not found
+ * 
  */
 char *(*get_print_func(char c))(modifier_t *, va_list)
 {
