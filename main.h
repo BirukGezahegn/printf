@@ -12,7 +12,7 @@
  * @width: width field, positive number
  * @precision: precision field positive number not including '.'
  * or -1 for '*'
- * @length: length field string composed of ['h', 'l']
+ * @length: length field string composed with ['h', 'l']
  * @specifier: specifier character can one of
  * ['c', 's', '%', 'd', 'i', 'b', 'u', 'o', 'x', 'X', 'S', 'p', 'r', 'R']
  *
